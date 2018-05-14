@@ -71,13 +71,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        JFXRippler fXRippler = new JFXRippler(lblDash);
-        JFXRippler fXRippler2 = new JFXRippler(lblMenu);
-        fXRippler2.setMaskType((JFXRippler.RipplerMask.RECT));
-        sideAnchor.getChildren().add(fXRippler);
-        toolBarRight.getChildren().add(fXRippler2);
         createPages();
-
     }
 
     //Set selected node to a content holder
