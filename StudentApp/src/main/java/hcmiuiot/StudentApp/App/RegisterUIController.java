@@ -45,7 +45,7 @@ public class RegisterUIController implements Initializable {
 		
 		
         JFXTreeTableColumn<Course, String> courseID = new JFXTreeTableColumn<>("CourseID");
-        courseID.setPrefWidth(150);
+        courseID.setPrefWidth(100);
         courseID.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
@@ -54,7 +54,7 @@ public class RegisterUIController implements Initializable {
         });
 
         JFXTreeTableColumn<Course, String> departmentID = new JFXTreeTableColumn<>("Department");
-        departmentID.setPrefWidth(150);
+        departmentID.setPrefWidth(100);
         departmentID.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
@@ -63,7 +63,7 @@ public class RegisterUIController implements Initializable {
         });
 
         JFXTreeTableColumn<Course, String> Name = new JFXTreeTableColumn<>("Name");
-        Name.setPrefWidth(150);
+        Name.setPrefWidth(220);
         Name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
@@ -73,7 +73,7 @@ public class RegisterUIController implements Initializable {
         
         
         JFXTreeTableColumn<Course, String> BeginDate = new JFXTreeTableColumn<>("Begin Date");
-        BeginDate.setPrefWidth(150);
+        BeginDate.setPrefWidth(100);
         BeginDate.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
@@ -82,7 +82,7 @@ public class RegisterUIController implements Initializable {
         });
         
         JFXTreeTableColumn<Course, String> EndDate = new JFXTreeTableColumn<>("End Date");
-        EndDate.setPrefWidth(150);
+        EndDate.setPrefWidth(100);
         EndDate.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
@@ -91,7 +91,7 @@ public class RegisterUIController implements Initializable {
         });
         
         JFXTreeTableColumn<Course, Number> Fee = new JFXTreeTableColumn<>("Fee");
-        Fee.setPrefWidth(150);
+        Fee.setPrefWidth(90);
         Fee.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, Number>, ObservableValue<Number>>() {
             @Override
             public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<Course,Number> param) {
@@ -99,8 +99,8 @@ public class RegisterUIController implements Initializable {
             }
         });
         
-        JFXTreeTableColumn<Course, Number> NumberOfCredits = new JFXTreeTableColumn<>("Number of Credits");
-        NumberOfCredits.setPrefWidth(150);
+        JFXTreeTableColumn<Course, Number> NumberOfCredits = new JFXTreeTableColumn<>("#Credits");
+        NumberOfCredits.setPrefWidth(80);
         NumberOfCredits.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, Number>, ObservableValue<Number>>() {
             @Override
             public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<Course,Number> param) {
@@ -109,7 +109,7 @@ public class RegisterUIController implements Initializable {
         });
         
         JFXTreeTableColumn<Course, Number> MaxSlot = new JFXTreeTableColumn<>("Max Slot");
-        MaxSlot.setPrefWidth(150);
+        MaxSlot.setPrefWidth(80);
         MaxSlot.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, Number>, ObservableValue<Number>>() {
             @Override
             public ObservableValue<Number> call(TreeTableColumn.CellDataFeatures<Course,Number> param) {
@@ -118,7 +118,7 @@ public class RegisterUIController implements Initializable {
         });
         
         JFXTreeTableColumn<Course, String> Room = new JFXTreeTableColumn<>("Room");
-        Room.setPrefWidth(150);
+        Room.setPrefWidth(80);
         Room.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
