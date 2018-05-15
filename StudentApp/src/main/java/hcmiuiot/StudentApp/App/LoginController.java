@@ -49,6 +49,7 @@ public class LoginController implements Initializable {
     private StackPane rootPane;
     @FXML
     private ImageView imgProgress;
+    Alert al = new Alert(AlertType.ERROR);
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -79,8 +80,6 @@ public class LoginController implements Initializable {
 						String pwdfromDB = result.getString("password");
 						pwd += salt;
 						String sha256 = DigestUtils.sha256Hex(pwd);
-					//	System.out.println(sha256);
-					//	System.out.println(pwdfromDB);
 						if (sha256.equals(pwdfromDB)) {  
 							Platform.runLater(() -> {
 								completeLogin();
@@ -88,7 +87,6 @@ public class LoginController implements Initializable {
 						}
 						else {
 							Platform.runLater(() -> {
-								Alert al = new Alert(AlertType.ERROR);
 								al.setTitle("Warning");
 								al.setContentText("Please input correct id and password!");
 								al.showAndWait();
@@ -97,7 +95,6 @@ public class LoginController implements Initializable {
 						}		
 					} else {
 						Platform.runLater(() -> {
-							Alert al = new Alert(AlertType.ERROR);
 							al.setTitle("Warning");
 							al.setContentText("Please input correct id and password!");
 							al.showAndWait();
