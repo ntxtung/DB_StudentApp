@@ -67,7 +67,7 @@ public class RegisterUIController implements Initializable {
         Name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Course, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Course, String> param) {
-                return param.getValue().getValue().name;
+            	return param.getValue().getValue().name;
             }
         });
         
