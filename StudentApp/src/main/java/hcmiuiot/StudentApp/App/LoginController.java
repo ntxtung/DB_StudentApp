@@ -2,9 +2,15 @@ package hcmiuiot.StudentApp.App;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -13,6 +19,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -21,6 +28,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -54,16 +63,53 @@ public class LoginController implements Initializable{
 	
 	@FXML
     private void login(ActionEvent event) {
+		
+      String user = txtUsername.getText();
+      String pwd = txtPassword.getText();
+      
+      try {
+    	ResultSet result = DbHandler.getInstance().ExecSQL("SELECT * FROM topicS.Student where studentID='" + user + "'");
+    	if (result.next()) 
+    	{
+    		result.first();
+    		String salt = result.getString("salt");
+    		String pwdfromDB = result.getString("password");
+    		pwd +=salt;
+    		String sha256 = DigestUtils.sha256Hex(pwd);
+    		System.out.println(sha256);
+    		System.out.println(pwdfromDB);
+    		if (sha256.equals(pwdfromDB)) 
+    		{
+    			  imgProgress.setVisible(true);
+    		        PauseTransition pauseTransition = new PauseTransition();
+    		        pauseTransition.setDuration(Duration.seconds(3));
+    		        pauseTransition.setOnFinished(ev -> {
+    		            completeLogin();
 
-        imgProgress.setVisible(true);
-        PauseTransition pauseTransition = new PauseTransition();
-        pauseTransition.setDuration(Duration.seconds(3));
-        pauseTransition.setOnFinished(ev -> {
-            completeLogin();
-
-        });
-        pauseTransition.play();
-    }
+    		        });
+    		        pauseTransition.play();
+    		}
+    		else
+    		{
+    			Alert al = new Alert(AlertType.ERROR);
+        		al.setTitle("Warning");
+        		al.setContentText("Please input correct id and pass ");
+        		al.showAndWait();
+    		}
+    		
+    	}
+    	else {
+    		Alert al = new Alert(AlertType.ERROR);
+    		al.setTitle("Warning");
+    		al.setContentText(" Please input correct id and pass");
+    		al.showAndWait();
+    	}
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+ }
 
     private void handleValidation() {
         RequiredFieldValidator fieldValidator = new RequiredFieldValidator();
