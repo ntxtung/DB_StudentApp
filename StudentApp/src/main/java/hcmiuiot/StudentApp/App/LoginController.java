@@ -21,6 +21,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,52 +64,51 @@ public class LoginController implements Initializable{
 	
 	@FXML
     private void login(ActionEvent event) {
+		imgProgress.setVisible(true);
 		
-      String user = txtUsername.getText();
-      String pwd = txtPassword.getText();
-      
-      try {
-    	ResultSet result = DbHandler.getInstance().ExecSQL("SELECT * FROM topicS.Student where studentID='" + user + "'");
-    	if (result.next()) 
-    	{
-    		result.first();
-    		String salt = result.getString("salt");
-    		String pwdfromDB = result.getString("password");
-    		pwd +=salt;
-    		String sha256 = DigestUtils.sha256Hex(pwd);
-    		System.out.println(sha256);
-    		System.out.println(pwdfromDB);
-    		if (sha256.equals(pwdfromDB)) 
-    		{
-    			  imgProgress.setVisible(true);
-    		        PauseTransition pauseTransition = new PauseTransition();
-    		        pauseTransition.setDuration(Duration.seconds(3));
-    		        pauseTransition.setOnFinished(ev -> {
-    		            completeLogin();
-
-    		        });
-    		        pauseTransition.play();
-    		}
-    		else
-    		{
-    			Alert al = new Alert(AlertType.ERROR);
-        		al.setTitle("Warning");
-        		al.setContentText("Please input correct id and pass ");
-        		al.showAndWait();
-    		}
-    		
-    	}
-    	else {
-    		Alert al = new Alert(AlertType.ERROR);
-    		al.setTitle("Warning");
-    		al.setContentText(" Please input correct id and pass");
-    		al.showAndWait();
-    	}
-		
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} 
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					String user = txtUsername.getText();
+					String pwd = txtPassword.getText();
+					ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
+					if (result.next()) {
+						result.first();
+						String salt = result.getString("salt");
+						String pwdfromDB = result.getString("password");
+						pwd += salt;
+						String sha256 = DigestUtils.sha256Hex(pwd);
+					//	System.out.println(sha256);
+					//	System.out.println(pwdfromDB);
+						if (sha256.equals(pwdfromDB)) {  
+							Platform.runLater(() -> {
+								completeLogin();
+							});
+						}
+						else {
+							Platform.runLater(() -> {
+								Alert al = new Alert(AlertType.ERROR);
+								al.setTitle("Warning");
+								al.setContentText("Please input correct id and password!");
+								al.showAndWait();
+							});	
+							imgProgress.setVisible(false);
+						}		
+					} else {
+						Platform.runLater(() -> {
+							Alert al = new Alert(AlertType.ERROR);
+							al.setTitle("Warning");
+							al.setContentText("Please input correct id and password!");
+							al.showAndWait();
+						});		
+						imgProgress.setVisible(false);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
  }
 
     private void handleValidation() {
