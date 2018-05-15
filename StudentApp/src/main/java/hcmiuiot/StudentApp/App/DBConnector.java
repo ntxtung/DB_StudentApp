@@ -14,7 +14,7 @@ public class DBConnector {
 			String username = "dbproject";
 			String password = "1.Dbproject";
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection connect = DriverManager.getConnection(url, username, password);
 			return connect;
 		} catch (ClassNotFoundException | SQLException e) {

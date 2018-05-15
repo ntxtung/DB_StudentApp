@@ -37,7 +37,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
 	private Label label;
     @FXML
     private JFXTextField txtUsername;
