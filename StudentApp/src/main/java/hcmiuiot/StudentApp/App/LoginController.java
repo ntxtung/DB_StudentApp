@@ -80,7 +80,7 @@ public class LoginController implements Initializable {
 						String pwdfromDB = result.getString("password");
 						pwd += salt;
 						String sha256 = DigestUtils.sha256Hex(pwd);
-						if (sha256.equals(pwdfromDB)) {  
+						if (sha256.equalsIgnoreCase(pwdfromDB)) {  
 							Platform.runLater(() -> {
 								completeLogin();
 							});
