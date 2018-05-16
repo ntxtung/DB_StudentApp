@@ -88,7 +88,7 @@ public class LoginController implements Initializable {
 						else {
 							Platform.runLater(() -> {
 								al.setTitle("Warning");
-								al.setContentText("Please input correct id and password!");
+								al.setContentText("Please input correct username and password!");
 								al.showAndWait();
 							});	
 							imgProgress.setVisible(false);
@@ -96,7 +96,7 @@ public class LoginController implements Initializable {
 					} else {
 						Platform.runLater(() -> {
 							al.setTitle("Warning");
-							al.setContentText("Please input correct id and password!");
+							al.setContentText("Please input correct username and password!");
 							al.showAndWait();
 						});		
 						imgProgress.setVisible(false);
