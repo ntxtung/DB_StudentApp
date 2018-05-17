@@ -1,12 +1,7 @@
 package hcmiuiot.StudentApp.App;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +10,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXToolbar;
 
-
-import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -27,8 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -77,15 +68,6 @@ public class DashboardController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnClose;
-    @FXML
-    private Label std_name;
-
-    @FXML
-    private Label id;
-//    @FXML
-//    private Image avatar;
-    
-    private DBConnector db;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -132,7 +114,7 @@ public class DashboardController implements Initializable {
     private void createPages() {
         try {
             home = FXMLLoader.load(getClass().getResource("Overview.fxml"));
-  //          add = FXMLLoader.load(getClass().getResource("Register.fxml"));
+            add = FXMLLoader.load(getClass().getResource("Register.fxml"));
 //            list = FXMLLoader.load(getClass().getResource("SubjectRegistration.fxml"));
             setNode(home);
         } catch (IOException ex) {
@@ -172,25 +154,12 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void logOff(ActionEvent event) {
-    	
+
     }
 
     @FXML
     private void exit(ActionEvent event) {
         Platform.exit();
     }
-//    public static Image getAvatar (Blob blob) {
-//    	byte[] byteImage = null;
-//    	if (blob != null)
-//			try {
-//				byteImage = blob.getBytes(1,(int)blob.length());
-//				return new Image(new ByteArrayInputStream(byteImage)); 
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//				return null;
-//			}
-//    	return null;
-//   
-//    }
-}
 
+}

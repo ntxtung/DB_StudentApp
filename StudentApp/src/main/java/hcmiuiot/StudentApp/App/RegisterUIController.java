@@ -1,10 +1,10 @@
 package hcmiuiot.StudentApp.App;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
+
 
 import java.net.URL;
 import java.sql.Connection;
@@ -30,7 +30,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 public class RegisterUIController implements Initializable {
@@ -39,6 +38,8 @@ public class RegisterUIController implements Initializable {
     private FlowPane main;
     @FXML
     private JFXTreeTableView<Course> treeView;
+    private DBConnector db;
+	private ResultSet result;
     @FXML
     private JFXTreeTableView<Course> treeView1;
     @FXML
@@ -53,7 +54,6 @@ public class RegisterUIController implements Initializable {
 	@FXML
 	private JFXButton addCourse2;
 
-	  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	
@@ -320,12 +320,11 @@ public class RegisterUIController implements Initializable {
         });
         
     }
-    
 	
     @FXML
     private void filter(ActionEvent event) {
     }
-    
+
 
     @FXML
     void addCourse(MouseEvent event) {
@@ -370,14 +369,17 @@ public class RegisterUIController implements Initializable {
     	}
     }
     
+
     public void loadDB() {
 		try {
 			Connection connect = db.connectDB();
 			connect.createStatement().executeQuery("USE topicS");
 			result = connect.createStatement().executeQuery("SELECT *, GetAvaSlot(topicS.Course.courseID) AS a FROM topicS.Course");
+
 			result1 = connect.createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getUser()+"%'");
 			result1.first();
 			//c
+
 			}
 		 catch (SQLException e) {
 			e.printStackTrace();
@@ -429,38 +431,6 @@ public class RegisterUIController implements Initializable {
             this.room = new SimpleStringProperty(room);
             this.availableSlot = new SimpleIntegerProperty(availableSlot);
         }
-        public String getCourseID () {
-        	return courseID.get();
-        }
-        public String getDepartmentID () {
-        	return deptID.get();
-        }
-        public String getName () {
-        	return name.get();
-        }
-        public String getBeginDate() {
-        	return beginDate.get();
-        }
-        public String getEndDate() {
-        	return endDate.get();
-        }
-        public  double getFee () {
-        	return  (double) fee.getValue();
-        }
-        public int getNumberOfCredit  () {
-        	return numberOfCredit.get();
-        }
-        public int getMaxSlot  () {
-        	return maxSlot.get();
-        }
-        public int getAvailableSlot  () {
-        	return availableSlot.get();
-        }
-        public String getRoom () {
-        	return room.get();
-        
 
-    }
     }
 }
-
