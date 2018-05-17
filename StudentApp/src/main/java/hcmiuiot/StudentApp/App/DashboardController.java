@@ -72,6 +72,29 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         createPages();
+        db = new DBConnector();
+       
+        try {
+        	 String stdId  =  LoginController.getUser();
+        	 Connection connect = db.connectDB();
+             ResultSet result = connect.createStatement().executeQuery("SELECT * FROM topicS.Student WHERE studentID LIKE '%"+stdId+"%'");
+             result.first();
+             std_name.setText(result.getString("fName")+" "+result.getString("lName"));
+			id.setText(result.getString("studentID"));
+			System.out.println(result.getBlob("img"));
+//			avatar = getAvatar((result.getBlob("img")));
+		
+//			ResultSet logos = DbHandler.getInstance().ExecSQL("SELECT logo FROM topicS.Department where deptID='BA'");
+//				    if (logos.next())
+//				   	image.setImage(DbHandler.convertBlob2Image(logos.getBlob(1)));
+			
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     //Set selected node to a content holder
