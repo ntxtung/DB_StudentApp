@@ -33,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -49,6 +50,8 @@ public class LoginController implements Initializable {
     private StackPane rootPane;
     @FXML
     private ImageView imgProgress;
+    @FXML
+    private JFXButton btntest;
     Alert al = new Alert(AlertType.ERROR);
 
     @FXML
@@ -73,7 +76,7 @@ public class LoginController implements Initializable {
 				try {
 					String user = txtUsername.getText();
 					String pwd = txtPassword.getText();
-					ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
+					ResultSet result = DbHandler.getInstance().execQuery("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
 					if (result.next()) {
 						result.first();
 						String salt = result.getString("salt");
@@ -145,6 +148,22 @@ public class LoginController implements Initializable {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+
+    @FXML
+    void onMouseClicked(ActionEvent event) {
+        try {
+            imgProgress.setVisible(false);
+            Stage dashboardStage = new Stage();
+            dashboardStage.setTitle("");
+            Parent root = FXMLLoader.load(getClass().getResource("UserRegister.fxml"));
+            Scene scene = new Scene(root);
+            dashboardStage.setScene(scene);
+            dashboardStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
