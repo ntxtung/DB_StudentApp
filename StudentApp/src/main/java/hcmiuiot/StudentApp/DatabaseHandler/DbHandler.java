@@ -24,27 +24,14 @@ public class DbHandler extends Configs {
     	}
     	return instance;
     }
-    public static ResultSet execQuery(String sql) {
-		Statement statement;
-		try {
-			statement = conn.createStatement();
+    public static ResultSet ExecSQL(String sql) {
+    	try {
 			return statement.executeQuery(sql);
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-		return null;
+    	return null;
     }
-    
-    public static int execUpdate(String sql) {
-		Statement statement;
-		try {
-			statement = conn.createStatement();
-			return statement.executeUpdate(sql);
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-		}
-		return 0;
-	}
 
     public static Connection getConnection() {
         String ConnectionString = "jdbc:mysql://" + Configs.dbHostname + ":" + Configs.dbPort + "/" + Configs.dbName;
@@ -57,18 +44,17 @@ public class DbHandler extends Configs {
         }
         return conn;
     }
-    
-    public static Image convertBlob2Image(Blob blob) {
-		byte[] byteImage = null;
-		if (blob != null)
+    public static Image convertBlob2Image (Blob blob) {
+    	byte[] byteImage = null;
+    	if (blob != null)
 			try {
-				byteImage = blob.getBytes(1, (int) blob.length());
-				return new Image(new ByteArrayInputStream(byteImage));
+				byteImage = blob.getBytes(1,(int)blob.length());
+				return new Image(new ByteArrayInputStream(byteImage)); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
 			}
-		return null;
-	}
+    	return null;
 
+}
 }

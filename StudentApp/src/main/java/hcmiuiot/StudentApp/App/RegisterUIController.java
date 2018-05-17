@@ -43,10 +43,10 @@ public class RegisterUIController implements Initializable {
     @FXML
     private JFXTreeTableView<Course> treeView1;
     @FXML
-    private JFXButton addCourse;
+    private JFXButton addCoursetoDB;
 
     @FXML
-    private JFXButton addCourse1;
+    private JFXButton deleteCourse;
     
 	private ResultSet result,result1,result2;
 	private ObservableList<Course> Courses1 = FXCollections.observableArrayList();
@@ -164,7 +164,7 @@ public class RegisterUIController implements Initializable {
         		int number_of_credits = result.getInt("num_of_credits");
         		int max_slot = result.getInt("max_slot");
         		String room = result.getString("room");
-        		int availableSlot =  result.getInt("a");
+        		int availableSlot = 99;
         		courses.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
         		
         	}
@@ -272,40 +272,84 @@ public class RegisterUIController implements Initializable {
             }
         });
 
-        //ObservableList<Course> Courses1 = FXCollections.observableArrayList();
-        try {
-        	System.out.println(" ăn lồn");
-        	//while (result1.next()) {
-        	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
-        			result2 = DbHandler.getInstance().execQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
-        			result2.first();
-        			System.out.println(result2.getString("name"));
-        			String courseid = result2.getString("courseID");
-            		String deptid = result2.getString("deptID");
-            		String name = result2.getString("name");
-            		String begin_date = result2.getString("begin_date");
-            		String end_date = result2.getString("end_date");
-            		double fee = result2.getDouble("fee");
-            		int number_of_credits = result2.getInt("num_of_credits");
-            		int max_slot = result2.getInt("max_slot");
-            		String room = result2.getString("room");
-            		ResultSet available = DbHandler.getInstance().execQuery("select topicS.GetAvaSlot('"+courseid+"')");
-    				available.first();
-    				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
-            		//int availableSlot =  result2.getInt("a");
-            		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
-        			System.out.println(result1.getString("CourseID"));
-    			result1.next();
-        			}
-        	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
-			 treeView1.setRoot(root1);
-		        treeView1.setShowRoot(false);
-        			
-//        			System.out.println("dm chay coi dm"); 
-        	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//        ObservableList<Course> Courses1 = FXCollections.observableArrayList();
+//        try {
+//        	System.out.println(" ăn lồn");
+//        	//while (result1.next()) {
+//        	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+//        			result2 = DbHandler.getConnection().createStatement().executeQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+//        			result2.first();
+//        			System.out.println(result2.getString("name"));
+//        			String courseid = result2.getString("courseID");
+//            		String deptid = result2.getString("deptID");
+//            		String name = result2.getString("name");
+//            		String begin_date = result2.getString("begin_date");
+//            		String end_date = result2.getString("end_date");
+//            		double fee = result2.getDouble("fee");
+//            		int number_of_credits = result2.getInt("num_of_credits");
+//            		int max_slot = result2.getInt("max_slot");
+//            		String room = result2.getString("room");
+//            		ResultSet available = DbHandler.getConnection().createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+//    				available.first();
+//    				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
+//            		//int availableSlot =  result2.getInt("a");
+//            		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
+//        			System.out.println(result1.getString("CourseID"));
+//        			result1.next();
+//        			}
+//        	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+//			 treeView1.setRoot(root1);
+//		        treeView1.setShowRoot(false);
+//        			
+////        			System.out.println("dm chay coi dm");
+//        		
+//       		
+//    
+//        	
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			
+//		}        
+//        try {
+//        	System.out.println(" ăn lồn");
+//        	while (result1.next()) {
+//        	//for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+//        		DbHandler.getInstance();
+//					//	Connection connect = DbHandler.getConnection();
+//        			result2 = DbHandler.ExecSQL("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+//        			result2.first();
+//        			System.out.println(result2.getString("name"));
+//        			String courseid = result2.getString("courseID");
+//            		String deptid = result2.getString("deptID");
+//            		String name = result2.getString("name");
+//            		String begin_date = result2.getString("begin_date");
+//            		String end_date = result2.getString("end_date");
+//            		double fee = result2.getDouble("fee");
+//            		int number_of_credits = result2.getInt("num_of_credits");
+//            		int max_slot = result2.getInt("max_slot");
+//            		String room = result2.getString("room");
+////            		ResultSet available = connect.createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+////    				available.first();
+////    				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
+//            		int availableSlot = 99;
+//            		//int availableSlot =  result2.getInt("a");
+//            		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
+//        			System.out.println(result1.getString("CourseID"));
+//    			result1.next();
+//        			}
+//        	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+//			 treeView1.setRoot(root1);
+//		        treeView1.setShowRoot(false);
+//        			
+////        			System.out.println("dm chay coi dm");
+//        		
+//       		
+//    
+//        	
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+        loadSelectedCourse();
         treeView1.getColumns().setAll(selectedCourseID, selectedDepartmentID, selectedName,selectedBeginDate,selectedEndDate,selectedFee,selectedNumberOfCredits,selectedMaxSlot,selectedAvailableSlot,selectedRoom);
        
         treeView.setOnMouseClicked((MouseEvent event) -> {
@@ -322,8 +366,8 @@ public class RegisterUIController implements Initializable {
 
 
     @FXML
-    void addCourse(MouseEvent event) {
-    String StudentID = LoginController.getUser();
+    void addCoursetoDB(MouseEvent event) {
+    String StudentID = LoginController.getID();
     for(int i = 0 ; i< Courses1.size();i++) {   	
     String khoa = Courses1.get(i).getCourseID();
     try {
@@ -335,12 +379,40 @@ public class RegisterUIController implements Initializable {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+    
 	
    
 
     System.out.println(khoa);
+    		}
     }
+    
+    @FXML
+    void deleteCourseFromDB(MouseEvent event) {
+    	TreeItem<Course> selection = treeView1.getSelectionModel().getSelectedItem();
+    	if (selection != null) {
+    		 String courseid = selection.getValue().getCourseID();
+    		 String studentid = LoginController.getID();
+    		 try {
+				deleteCourse(courseid,studentid);
+				loadSelectedCourse();
+				 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+				 treeView1.setRoot(root1);
+			        treeView1.setShowRoot(false);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	
+    		
+    	}
     }
+    
+    
+    
     public void onEdit() {
     	TreeItem<Course> selection = treeView.getSelectionModel().getSelectedItem();
     	System.out.println("ĐMCS");
@@ -367,11 +439,13 @@ public class RegisterUIController implements Initializable {
 
     public void loadDB() {
 		try {
-			Connection connect = db.connectDB();
-			connect.createStatement().executeQuery("USE topicS");
-			result = connect.createStatement().executeQuery("SELECT *, GetAvaSlot(topicS.Course.courseID) AS a FROM topicS.Course");
+			DbHandler.getInstance();
+			//			Connection connect = null;
+//			connect.createStatement().executeQuery("USE topicS");
+			result = DbHandler.ExecSQL("SELECT * FROM topicS.Course");
+			result.first();
 
-			result1 = connect.createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getUser()+"%'");
+			result1 = DbHandler.getConnection().createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getID()+"%'");
 			result1.first();
 
 			}
@@ -380,7 +454,7 @@ public class RegisterUIController implements Initializable {
 		}	
     }
     public void insertCourse(String StudentID,String CourseID) throws SQLException , Exception {
-    	Connection connect = db.connectDB();
+    	Connection connect = DbHandler.getConnection();
     	System.out.println("Adding");
     	PreparedStatement pr = connect.prepareStatement("INSERT IGNORE INTO `topicS`.`Enroll`(`studentID`,`courseID`) VALUES (?,?)");
     	pr.setString(1, StudentID);
@@ -388,15 +462,94 @@ public class RegisterUIController implements Initializable {
     	pr.execute();
     	pr.close();
     }
-//    public void deleteCourse(String CourseID) throws SQLException , Exception {
-//    	Connection connect = db.connectDB();
-//    	System.out.println("deleting");
-//    	PreparedStatement pr = connect.prepareStatement("INSERT IGNORE INTO `topicS`.`Enroll`(`studentID`) VALUES (?)");
-//    	pr.setString(1, StudentID);
-//    	pr.setString(2, CourseID);
-//    	pr.execute();
-//    	pr.close();
-//    }
+    public void deleteCourse(String CourseID, String StudentID) throws SQLException , Exception {
+    	Connection connect = DbHandler.getConnection();
+    	System.out.println("deleting");
+    	PreparedStatement pr = connect.prepareStatement("DELETE FROM `topicS`.`Enroll` WHERE `courseID`=? AND `studentID`=?");
+    	pr.setString(1, CourseID);
+    	pr.setString(2, StudentID);
+    	pr.execute();
+    	pr.close();
+    }
+    public void loadSelectedCourse() {
+    	 ObservableList<Course> Courses1 = FXCollections.observableArrayList();
+         try {
+         	System.out.println(" ăn lồn");
+         	//while (result1.next()) {
+         	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+         			result2 = DbHandler.getConnection().createStatement().executeQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+         			result2.first();
+         			System.out.println(result2.getString("name"));
+         			String courseid = result2.getString("courseID");
+             		String deptid = result2.getString("deptID");
+             		String name = result2.getString("name");
+             		String begin_date = result2.getString("begin_date");
+             		String end_date = result2.getString("end_date");
+             		double fee = result2.getDouble("fee");
+             		int number_of_credits = result2.getInt("num_of_credits");
+             		int max_slot = result2.getInt("max_slot");
+             		String room = result2.getString("room");
+             		ResultSet available = DbHandler.getConnection().createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+     				available.first();
+     				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
+             		//int availableSlot =  result2.getInt("a");
+             		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
+         			System.out.println(result1.getString("CourseID"));
+         			result1.next();
+         			}
+         	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+ 			 treeView1.setRoot(root1);
+ 		        treeView1.setShowRoot(false);
+         			
+//         			System.out.println("dm chay coi dm");
+         		
+        		
+     
+         	
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 			
+ 		}        
+         try {
+         	System.out.println(" ăn lồn");
+         	while (result1.next()) {
+         	//for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+         		DbHandler.getInstance();
+ 					//	Connection connect = DbHandler.getConnection();
+         			result2 = DbHandler.ExecSQL("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+         			result2.first();
+         			System.out.println(result2.getString("name"));
+         			String courseid = result2.getString("courseID");
+             		String deptid = result2.getString("deptID");
+             		String name = result2.getString("name");
+             		String begin_date = result2.getString("begin_date");
+             		String end_date = result2.getString("end_date");
+             		double fee = result2.getDouble("fee");
+             		int number_of_credits = result2.getInt("num_of_credits");
+             		int max_slot = result2.getInt("max_slot");
+             		String room = result2.getString("room");
+//             		ResultSet available = connect.createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+//     				available.first();
+//     				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
+             		int availableSlot = 99;
+             		//int availableSlot =  result2.getInt("a");
+             		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
+         			System.out.println(result1.getString("CourseID"));
+     			result1.next();
+         			}
+         	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+ 			 treeView1.setRoot(root1);
+ 		        treeView1.setShowRoot(false);
+         			
+//         			System.out.println("dm chay coi dm");
+         		
+        		
+     
+         	
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+    }
     
     
 
@@ -425,6 +578,35 @@ public class RegisterUIController implements Initializable {
             this.room = new SimpleStringProperty(room);
             this.availableSlot = new SimpleIntegerProperty(availableSlot);
         }
-
+        public String getCourseID () {
+        	return courseID.get();
+        }
+        public String getDepartmentID () {
+        	return deptID.get();
+        }
+        public String getName () {
+        	return name.get();
+        }
+        public String getBeginDate() {
+        	return beginDate.get();
+        }
+        public String getEndDate() {
+        	return endDate.get();
+        }
+        public  double getFee () {
+        	return  (double) fee.getValue();
+        }
+        public int getNumberOfCredit  () {
+        	return numberOfCredit.get();
+        }
+        public int getMaxSlot  () {
+        	return maxSlot.get();
+        }
+        public int getAvailableSlot  () {
+        	return availableSlot.get();
+        }
+        public String getRoom () {
+        	return room.get();
+        }
     }
 }

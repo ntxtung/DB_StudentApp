@@ -58,7 +58,7 @@ public class UserRegisterController {
     	String query = "INSERT INTO `topicS`.`Student` (`studentID`, `fName`, `lName`, `birthday`,`password`, `deptID`) VALUES ('"+ id +"'," + "'"+ fname
     			+ "'," + "'" + lname +"'," + "'" + DOB + "',"+ "'" +pwd +"'," +"'" + dept +"')" ;
    // 	System.out.println(query);
-    	DbHandler.getInstance().execUpdate(query);
+    	DbHandler.getInstance().ExecSQL(query);
     	//	DbHandler.execUpdate(query);
 	    }
 	    

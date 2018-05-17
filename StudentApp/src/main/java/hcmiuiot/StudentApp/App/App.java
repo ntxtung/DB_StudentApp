@@ -1,5 +1,8 @@
 package hcmiuiot.StudentApp.App;
 
+import java.sql.ResultSet;
+
+import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +17,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
+		//ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='ITITIU16101'");
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("College Database System");

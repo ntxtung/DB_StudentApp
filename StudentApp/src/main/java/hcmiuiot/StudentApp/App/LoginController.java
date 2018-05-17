@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.jfoenix.controls.JFXButton;
@@ -18,6 +20,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -32,22 +35,31 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LoginController implements Initializable {
 	private Label label;
-    @FXML
-    private JFXTextField txtUsername;
-    @FXML
-    private JFXPasswordField txtPassword;
-    @FXML
-    private JFXButton btnLogin;
+
     @FXML
     private StackPane rootPane;
+
+    @FXML
+    private JFXTextField txtUsername;
+
+    @FXML
+    private JFXPasswordField txtPassword;
+
+    @FXML
+    private JFXButton btnLogin;
+
     @FXML
     private ImageView imgProgress;
+
     @FXML
     private JFXButton btnSignUp;
-    
+
+    public static String user;
+    public String pwd; 
     Alert al = new Alert(AlertType.ERROR);
 
     @FXML
@@ -63,16 +75,17 @@ public class LoginController implements Initializable {
 	}
 	
 	@FXML
-    private void login(ActionEvent event) {
+    void login(ActionEvent event) {
 		imgProgress.setVisible(true);
 		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					String user = txtUsername.getText();
-					String pwd = txtPassword.getText();
-					ResultSet result = DbHandler.getInstance().execQuery("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
+					 user = txtUsername.getText();
+					 pwd = txtPassword.getText();
+					DbHandler.getInstance();
+					ResultSet result = DbHandler.ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
 					if (result.next()) {
 						result.first();
 						String salt = result.getString("salt");
@@ -106,22 +119,16 @@ public class LoginController implements Initializable {
 			}
 		}).start();
  }
-	@FXML
-	public void onSignUp(ActionEvent event) {
-        try {
-            Stage dashboardStage = new Stage();
-            dashboardStage.setTitle("");
-            Parent root = FXMLLoader.load(getClass().getResource("UserRegister.fxml"));
-            Scene scene = new Scene(root);
-            dashboardStage.setScene(scene);
-            dashboardStage.setTitle("User Register");
-            dashboardStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    @FXML
+    void onSignUp(ActionEvent event) {
+
+    }
+
+    public static void setUser(String user) {
+		LoginController.user = user;
 	}
 
-    private void handleValidation() {
+	private void handleValidation() {
         RequiredFieldValidator fieldValidator = new RequiredFieldValidator();
         fieldValidator.setMessage("Input required");
         fieldValidator.setIcon(new FontAwesomeIconView(FontAwesomeIcon.TIMES));
@@ -160,4 +167,8 @@ public class LoginController implements Initializable {
 
     }
 
+	public static String getID() {
+		return user;
+	}
+    
 }

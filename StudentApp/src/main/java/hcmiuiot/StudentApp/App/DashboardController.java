@@ -92,7 +92,8 @@ public class DashboardController implements Initializable {
         createPages();
        
         try {
-            ResultSet result = DbHandler.getInstance().execQuery("SELECT studentID, fName, lName, img FROM topicS.Student WHERE studentID LIKE '%"+stdId+"%'");
+   
+            ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, fName, lName, img FROM topicS.Student WHERE studentID LIKE '%"+LoginController.getID()+"%'");
             result.first();
             studentID = result.getString("studentID");
             std_name.setText(result.getString("fName")+" "+result.getString("lName"));
