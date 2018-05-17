@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
+
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -49,6 +49,9 @@ public class LoginController implements Initializable {
     private StackPane rootPane;
     @FXML
     private ImageView imgProgress;
+    @FXML
+    private JFXButton btnSignUp;
+    
     Alert al = new Alert(AlertType.ERROR);
 
     @FXML
@@ -73,7 +76,7 @@ public class LoginController implements Initializable {
 				try {
 					String user = txtUsername.getText();
 					String pwd = txtPassword.getText();
-					ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
+					ResultSet result = DbHandler.getInstance().execQuery("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
 					if (result.next()) {
 						result.first();
 						String salt = result.getString("salt");
@@ -107,6 +110,20 @@ public class LoginController implements Initializable {
 			}
 		}).start();
  }
+	@FXML
+	public void onSignUp(ActionEvent event) {
+        try {
+            Stage dashboardStage = new Stage();
+            dashboardStage.setTitle("");
+            Parent root = FXMLLoader.load(getClass().getResource("UserRegister.fxml"));
+            Scene scene = new Scene(root);
+            dashboardStage.setScene(scene);
+            dashboardStage.setTitle("User Register");
+            dashboardStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+	}
 
     private void handleValidation() {
         RequiredFieldValidator fieldValidator = new RequiredFieldValidator();

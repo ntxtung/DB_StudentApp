@@ -49,6 +49,11 @@
                         <Image url="file:./res/icons/Preloader_9.gif" />
                      </image>
                   </ImageView>
+                  <JFXButton fx:id="btnSignUp" buttonType="RAISED" layoutX="153.0" layoutY="323.0" onAction="#onSignUp" prefHeight="37.0" prefWidth="92.0" style="-fx-background-color: #2d378e;" text="Sign up" textFill="#f2f2f2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </AnchorPane>
             <Label layoutX="270.0" layoutY="42.0" text="COLLEGE MANAGEMENT SYSTEM" textFill="WHITE">
