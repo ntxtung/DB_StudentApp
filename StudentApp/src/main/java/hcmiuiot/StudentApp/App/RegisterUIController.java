@@ -1,5 +1,6 @@
 package hcmiuiot.StudentApp.App;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
@@ -30,6 +31,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 public class RegisterUIController implements Initializable {
@@ -38,8 +40,6 @@ public class RegisterUIController implements Initializable {
     private FlowPane main;
     @FXML
     private JFXTreeTableView<Course> treeView;
-    private DBConnector db;
-	private ResultSet result;
     @FXML
     private JFXTreeTableView<Course> treeView1;
     @FXML
@@ -48,18 +48,17 @@ public class RegisterUIController implements Initializable {
     @FXML
     private JFXButton addCourse1;
     
-    private DBConnector db;
 	private ResultSet result,result1,result2;
 	private ObservableList<Course> Courses1 = FXCollections.observableArrayList();
 	@FXML
 	private JFXButton addCourse2;
+	
+	private String studentID;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     	
-    	db = new DBConnector();
-		loadDB();
-		
+		loadDB();	
 		
         JFXTreeTableColumn<Course, String> courseID = new JFXTreeTableColumn<>("CourseID");
         courseID.setPrefWidth(100);
@@ -278,8 +277,7 @@ public class RegisterUIController implements Initializable {
         	System.out.println(" ăn lồn");
         	//while (result1.next()) {
         	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
-        			Connection connect = db.connectDB();
-        			result2 = connect.createStatement().executeQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+        			result2 = DbHandler.getInstance().execQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
         			result2.first();
         			System.out.println(result2.getString("name"));
         			String courseid = result2.getString("courseID");
@@ -291,7 +289,7 @@ public class RegisterUIController implements Initializable {
             		int number_of_credits = result2.getInt("num_of_credits");
             		int max_slot = result2.getInt("max_slot");
             		String room = result2.getString("room");
-            		ResultSet available = connect.createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+            		ResultSet available = DbHandler.getInstance().execQuery("select topicS.GetAvaSlot('"+courseid+"')");
     				available.first();
     				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
             		//int availableSlot =  result2.getInt("a");
@@ -303,10 +301,7 @@ public class RegisterUIController implements Initializable {
 			 treeView1.setRoot(root1);
 		        treeView1.setShowRoot(false);
         			
-//        			System.out.println("dm chay coi dm");
-        		
-       		
-    
+//        			System.out.println("dm chay coi dm"); 
         	
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -328,7 +323,7 @@ public class RegisterUIController implements Initializable {
 
     @FXML
     void addCourse(MouseEvent event) {
-    	String StudentID = LoginController.getUser();
+    String StudentID = LoginController.getUser();
     for(int i = 0 ; i< Courses1.size();i++) {   	
     String khoa = Courses1.get(i).getCourseID();
     try {
@@ -378,7 +373,6 @@ public class RegisterUIController implements Initializable {
 
 			result1 = connect.createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getUser()+"%'");
 			result1.first();
-			//c
 
 			}
 		 catch (SQLException e) {

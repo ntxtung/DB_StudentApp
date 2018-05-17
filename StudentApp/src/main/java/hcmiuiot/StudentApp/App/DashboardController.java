@@ -2,14 +2,16 @@ package hcmiuiot.StudentApp.App;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXToolbar;
 
+import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -68,29 +71,40 @@ public class DashboardController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private JFXButton btnClose;
+    
+    @FXML
+    private Label std_name;
+
+    @FXML
+    private Label id;
+    
+    @FXML
+    private ImageView avatar;
+    
+    private static String studentID;
+    
+    public String getStudentID() {
+    	return this.studentID;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         createPages();
-        db = new DBConnector();
        
         try {
-        	 String stdId  =  LoginController.getUser();
-        	 Connection connect = db.connectDB();
-             ResultSet result = connect.createStatement().executeQuery("SELECT * FROM topicS.Student WHERE studentID LIKE '%"+stdId+"%'");
-             result.first();
-             std_name.setText(result.getString("fName")+" "+result.getString("lName"));
-			id.setText(result.getString("studentID"));
-			System.out.println(result.getBlob("img"));
-//			avatar = getAvatar((result.getBlob("img")));
+            ResultSet result = DbHandler.getInstance().execQuery("SELECT studentID, fName, lName, img FROM topicS.Student WHERE studentID LIKE '%"+stdId+"%'");
+            result.first();
+            studentID = result.getString("studentID");
+            std_name.setText(result.getString("fName")+" "+result.getString("lName"));
+			id.setText(studentID);
+			//System.out.println(result.getBlob("img"));
+			avatar.setImage(DbHandler.convertBlob2Image(result.getBlob("img")));
 		
 //			ResultSet logos = DbHandler.getInstance().ExecSQL("SELECT logo FROM topicS.Department where deptID='BA'");
 //				    if (logos.next())
 //				   	image.setImage(DbHandler.convertBlob2Image(logos.getBlob(1)));
 			
-			
-			
-			
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
