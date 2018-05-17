@@ -49,6 +49,8 @@ public class LoginController implements Initializable {
     private StackPane rootPane;
     @FXML
     private ImageView imgProgress;
+    public static String user;
+    public String pwd; 
     Alert al = new Alert(AlertType.ERROR);
 
     @FXML
@@ -71,8 +73,8 @@ public class LoginController implements Initializable {
 			@Override
 			public void run() {
 				try {
-					String user = txtUsername.getText();
-					String pwd = txtPassword.getText();
+					 user = txtUsername.getText();
+					 pwd = txtPassword.getText();
 					ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='" + user + "'");
 					if (result.next()) {
 						result.first();
@@ -147,4 +149,8 @@ public class LoginController implements Initializable {
 
     }
 
+	public static String getUser() {
+		return user;
+	}
+    
 }
