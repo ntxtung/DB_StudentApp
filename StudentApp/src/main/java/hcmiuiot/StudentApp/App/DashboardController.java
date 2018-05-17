@@ -93,9 +93,9 @@ public class DashboardController implements Initializable {
         db = new DBConnector();
        
         try {
-        	 String username =  LoginController.getUser();
+        	 String stdId  =  LoginController.getUser();
         	 Connection connect = db.connectDB();
-             ResultSet result = connect.createStatement().executeQuery("SELECT * FROM topicS.Student WHERE studentID LIKE '%"+username+"%'");
+             ResultSet result = connect.createStatement().executeQuery("SELECT * FROM topicS.Student WHERE studentID LIKE '%"+stdId+"%'");
              result.first();
              std_name.setText(result.getString("fName")+" "+result.getString("lName"));
 			id.setText(result.getString("studentID"));

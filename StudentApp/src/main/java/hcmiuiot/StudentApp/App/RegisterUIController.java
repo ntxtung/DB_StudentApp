@@ -4,10 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-
+import hcmiuiot.StudentApp.DatabaseHandler.DbHandler;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -40,14 +41,18 @@ public class RegisterUIController implements Initializable {
     private JFXTreeTableView<Course> treeView;
     @FXML
     private JFXTreeTableView<Course> treeView1;
+    @FXML
+    private JFXButton addCourse;
+
+    @FXML
+    private JFXButton addCourse1;
+    
     private DBConnector db;
-	private ResultSet result;
+	private ResultSet result,result1,result2;
 	private ObservableList<Course> Courses1 = FXCollections.observableArrayList();
 	@FXML
 	private JFXButton addCourse2;
 
-	    @FXML
-	    private JFXButton addCourse;
 	  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -269,10 +274,50 @@ public class RegisterUIController implements Initializable {
         });
 
         //ObservableList<Course> Courses1 = FXCollections.observableArrayList();
-       
+        try {
+        	System.out.println(" ăn lồn");
+        	//while (result1.next()) {
+        	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+        			Connection connect = db.connectDB();
+        			result2 = connect.createStatement().executeQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
+        			result2.first();
+        			System.out.println(result2.getString("name"));
+        			String courseid = result2.getString("courseID");
+            		String deptid = result2.getString("deptID");
+            		String name = result2.getString("name");
+            		String begin_date = result2.getString("begin_date");
+            		String end_date = result2.getString("end_date");
+            		double fee = result2.getDouble("fee");
+            		int number_of_credits = result2.getInt("num_of_credits");
+            		int max_slot = result2.getInt("max_slot");
+            		String room = result2.getString("room");
+            		ResultSet available = connect.createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
+    				available.first();
+    				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
+            		//int availableSlot =  result2.getInt("a");
+            		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
+        			System.out.println(result1.getString("CourseID"));
+    			result1.next();
+        			}
+        	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
+			 treeView1.setRoot(root1);
+		        treeView1.setShowRoot(false);
+        			
+//        			System.out.println("dm chay coi dm");
+        		
+       		
+    
+        	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         treeView1.getColumns().setAll(selectedCourseID, selectedDepartmentID, selectedName,selectedBeginDate,selectedEndDate,selectedFee,selectedNumberOfCredits,selectedMaxSlot,selectedAvailableSlot,selectedRoom);
        
-        
+        treeView.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() > 1) {
+                onEdit();
+            }
+        });
         
     }
     
@@ -284,6 +329,25 @@ public class RegisterUIController implements Initializable {
 
     @FXML
     void addCourse(MouseEvent event) {
+    	String StudentID = LoginController.getUser();
+    for(int i = 0 ; i< Courses1.size();i++) {   	
+    String khoa = Courses1.get(i).getCourseID();
+    try {
+		insertCourse(StudentID, khoa);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+   
+
+    System.out.println(khoa);
+    }
+    }
+    public void onEdit() {
     	TreeItem<Course> selection = treeView.getSelectionModel().getSelectedItem();
     	System.out.println("ĐMCS");
     	if (selection != null) {
@@ -306,18 +370,39 @@ public class RegisterUIController implements Initializable {
     	}
     }
     
-    
     public void loadDB() {
 		try {
 			Connection connect = db.connectDB();
 			connect.createStatement().executeQuery("USE topicS");
 			result = connect.createStatement().executeQuery("SELECT *, GetAvaSlot(topicS.Course.courseID) AS a FROM topicS.Course");
+			result1 = connect.createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getUser()+"%'");
+			result1.first();
 			//c
 			}
 		 catch (SQLException e) {
 			e.printStackTrace();
 		}	
     }
+    public void insertCourse(String StudentID,String CourseID) throws SQLException , Exception {
+    	Connection connect = db.connectDB();
+    	System.out.println("Adding");
+    	PreparedStatement pr = connect.prepareStatement("INSERT IGNORE INTO `topicS`.`Enroll`(`studentID`,`courseID`) VALUES (?,?)");
+    	pr.setString(1, StudentID);
+    	pr.setString(2, CourseID);
+    	pr.execute();
+    	pr.close();
+    }
+//    public void deleteCourse(String CourseID) throws SQLException , Exception {
+//    	Connection connect = db.connectDB();
+//    	System.out.println("deleting");
+//    	PreparedStatement pr = connect.prepareStatement("INSERT IGNORE INTO `topicS`.`Enroll`(`studentID`) VALUES (?)");
+//    	pr.setString(1, StudentID);
+//    	pr.setString(2, CourseID);
+//    	pr.execute();
+//    	pr.close();
+//    }
+    
+    
 
     class Course extends RecursiveTreeObject<Course> {
 
