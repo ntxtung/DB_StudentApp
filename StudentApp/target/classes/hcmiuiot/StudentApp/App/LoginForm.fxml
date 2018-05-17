@@ -49,7 +49,6 @@
                         <Image url="file:./res/icons/Preloader_9.gif" />
                      </image>
                   </ImageView>
-                  <JFXButton fx:id="btntest" buttonType="RAISED" layoutX="154.0" layoutY="321.0" onAction="#onMouseClicked" prefHeight="37.0" prefWidth="92.0" ripplerFill="#fcfbff" style="-fx-background-color: #2d378e;" text="Sign Up" textFill="#f4f4f5" AnchorPane.bottomAnchor="49.19999999999999" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="154.0" />
                </children>
             </AnchorPane>
             <Label layoutX="270.0" layoutY="42.0" text="COLLEGE MANAGEMENT SYSTEM" textFill="WHITE">

@@ -21,29 +21,14 @@ public class DbHandler extends Configs {
     	}
     	return instance;
     }
-    
-    public static ResultSet execQuery(String sql) {
-		Statement statement;
-		try {
-			statement = conn.createStatement();
+    public static ResultSet ExecSQL(String sql) {
+    	try {
 			return statement.executeQuery(sql);
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-		return null;
-	}
-    
-    public static int execUpdate(String sql) {
-		Statement statement;
-		try {
-			statement = conn.createStatement();
-			return statement.executeUpdate(sql);
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-		}
-		return 0;
-	}
-    
+    	return null;
+    }
 
     public static Connection getConnection() {
         String ConnectionString = "jdbc:mysql://" + Configs.dbHostname + ":" + Configs.dbPort + "/" + Configs.dbName;
@@ -56,4 +41,5 @@ public class DbHandler extends Configs {
         }
         return conn;
     }
+
 }
