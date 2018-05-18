@@ -111,7 +111,7 @@ public class DashboardController implements Initializable {
         try {
         	home = FXMLLoader.load(getClass().getResource("Overview.fxml"));
             add = FXMLLoader.load(getClass().getResource("RegisterUI.fxml"));
-           setNode(add);
+           setNode(home);
         } catch (IOException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
