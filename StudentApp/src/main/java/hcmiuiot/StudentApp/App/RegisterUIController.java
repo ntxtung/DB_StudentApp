@@ -29,6 +29,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
@@ -349,7 +351,9 @@ public class RegisterUIController implements Initializable {
 //		} catch (SQLException e) {
 //			e.printStackTrace();
 //		}
+       
         loadSelectedCourse();
+        
         treeView1.getColumns().setAll(selectedCourseID, selectedDepartmentID, selectedName,selectedBeginDate,selectedEndDate,selectedFee,selectedNumberOfCredits,selectedMaxSlot,selectedAvailableSlot,selectedRoom);
        
         treeView.setOnMouseClicked((MouseEvent event) -> {
@@ -415,7 +419,6 @@ public class RegisterUIController implements Initializable {
     
     public void onEdit() {
     	TreeItem<Course> selection = treeView.getSelectionModel().getSelectedItem();
-    	System.out.println("ĐMCS");
     	if (selection != null) {
     		 
     		 String courseid = selection.getValue().getCourseID();
@@ -447,6 +450,8 @@ public class RegisterUIController implements Initializable {
 
 			result1 = DbHandler.getConnection().createStatement().executeQuery("SELECT * FROM topicS.Enroll WHERE studentID LIKE '%"+LoginController.getID()+"%'");
 			result1.first();
+			
+			
 
 			}
 		 catch (SQLException e) {
@@ -459,7 +464,16 @@ public class RegisterUIController implements Initializable {
     	PreparedStatement pr = connect.prepareStatement("INSERT IGNORE INTO `topicS`.`Enroll`(`studentID`,`courseID`) VALUES (?,?)");
     	pr.setString(1, StudentID);
     	pr.setString(2, CourseID);
-    	pr.execute();
+    	
+    	ResultSet rs = DbHandler.getInstance().ExecSQL("SELECT GetAvaSlot('"+ CourseID +"') AS AvailableSlot");
+    	rs.next();
+    	if (rs.getInt(1) <= 0) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setContentText("NO MORE SLOT HAHAHAHAHAHA :))))))))))))))");
+    		alert.showAndWait();
+    	} else {
+    		pr.execute();
+    	}
     	pr.close();
     }
     public void deleteCourse(String CourseID, String StudentID) throws SQLException , Exception {
@@ -474,9 +488,9 @@ public class RegisterUIController implements Initializable {
     public void loadSelectedCourse() {
     	 ObservableList<Course> Courses1 = FXCollections.observableArrayList();
          try {
-         	System.out.println(" ăn lồn");
-         	//while (result1.next()) {
-         	for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
+        	 
+         	while (result1.next()) {
+         	//for(int i = 0 ; i < result1.getme; i++) {
          			result2 = DbHandler.getConnection().createStatement().executeQuery("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
          			result2.first();
          			System.out.println(result2.getString("name"));
@@ -492,63 +506,21 @@ public class RegisterUIController implements Initializable {
              		ResultSet available = DbHandler.getConnection().createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
      				available.first();
      				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
-             		//int availableSlot =  result2.getInt("a");
              		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
          			System.out.println(result1.getString("CourseID"));
-         			result1.next();
+         			
          			}
+         	result1.next();
          	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
  			 treeView1.setRoot(root1);
  		        treeView1.setShowRoot(false);
          			
-//         			System.out.println("dm chay coi dm");
-         		
-        		
-     
          	
  		} catch (SQLException e) {
  			e.printStackTrace();
  			
  		}        
-         try {
-         	System.out.println(" ăn lồn");
-         	while (result1.next()) {
-         	//for(int i = 0 ; i <= result1.getMetaData().getColumnCount() ; i++) {
-         		DbHandler.getInstance();
- 					//	Connection connect = DbHandler.getConnection();
-         			result2 = DbHandler.ExecSQL("SELECT * FROM topicS.Course WHERE courseID LIKE '%"+result1.getString("CourseID")+"%'");
-         			result2.first();
-         			System.out.println(result2.getString("name"));
-         			String courseid = result2.getString("courseID");
-             		String deptid = result2.getString("deptID");
-             		String name = result2.getString("name");
-             		String begin_date = result2.getString("begin_date");
-             		String end_date = result2.getString("end_date");
-             		double fee = result2.getDouble("fee");
-             		int number_of_credits = result2.getInt("num_of_credits");
-             		int max_slot = result2.getInt("max_slot");
-             		String room = result2.getString("room");
-//             		ResultSet available = connect.createStatement().executeQuery("select topicS.GetAvaSlot('"+courseid+"')");
-//     				available.first();
-//     				int availableSlot = available.getInt("topicS.GetAvaSlot('"+courseid+"')");
-             		int availableSlot = 99;
-             		//int availableSlot =  result2.getInt("a");
-             		Courses1.add(new Course(courseid,deptid,name,begin_date,end_date,fee,number_of_credits,max_slot,room, availableSlot));
-         			System.out.println(result1.getString("CourseID"));
-     			result1.next();
-         			}
-         	 final TreeItem<Course> root1 = new RecursiveTreeItem<Course>(Courses1, RecursiveTreeObject::getChildren);
- 			 treeView1.setRoot(root1);
- 		        treeView1.setShowRoot(false);
-         			
-//         			System.out.println("dm chay coi dm");
-         		
-        		
-     
-         	
- 		} catch (SQLException e) {
- 			e.printStackTrace();
- 		}
+
     }
     
     
