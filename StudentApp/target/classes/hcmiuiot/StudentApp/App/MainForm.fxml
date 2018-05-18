@@ -58,7 +58,6 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <JFXButton fx:id="btnHome" onAction="#openHome" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Home" textFill="WHITE">
@@ -69,7 +68,7 @@
                                     <FontAwesomeIconView fill="#4f4d8b" glyphName="DASHBOARD" size="16.0" textAlignment="CENTER" wrappingWidth="40.0" />
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="btnAdd" onAction="#openAddStudent" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Add student" textFill="WHITE" GridPane.rowIndex="1">
+                              <JFXButton fx:id="btnAdd" onAction="#openAddCourse" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Enroll Courses" textFill="WHITE" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>
@@ -77,15 +76,7 @@
                                     <FontAwesomeIconView fill="#4f4d8b" glyphName="PLUS_SQUARE" size="16.0" textAlignment="CENTER" wrappingWidth="40.0" />
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="btnView" onAction="#openListStudent" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="View students" textFill="WHITE" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font name="Roboto Medium" size="13.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView fill="#4f4d8b" glyphName="EYE" size="16.0" textAlignment="CENTER" wrappingWidth="40.0" />
-                                 </graphic>
-                              </JFXButton>
-                              <JFXButton fx:id="btnLogout" onAction="#logOff" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Log out" textFill="WHITE" GridPane.rowIndex="3">
+                              <JFXButton fx:id="btnLogout" onAction="#onlogOff" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Log out" textFill="WHITE" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>
@@ -93,7 +84,7 @@
                                     <FontAwesomeIconView fill="#4f4d8b" glyphName="SIGN_OUT" size="16.0" textAlignment="CENTER" wrappingWidth="40.0" />
                                  </graphic>
                               </JFXButton>
-                              <JFXButton fx:id="btnClose" onAction="#exit" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Exit" textFill="WHITE" GridPane.rowIndex="4">
+                              <JFXButton fx:id="btnClose" onAction="#onExit" prefHeight="36.0" prefWidth="189.0" styleClass="side-buttons" text="Exit" textFill="WHITE" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>

@@ -17,10 +17,9 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
-		//ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, password, salt FROM topicS.Student where studentID='ITITIU16101'");
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("College Database System");
+		primaryStage.setTitle("Student Application");
 		primaryStage.setResizable(false);
 		primaryStage.show();
 	}

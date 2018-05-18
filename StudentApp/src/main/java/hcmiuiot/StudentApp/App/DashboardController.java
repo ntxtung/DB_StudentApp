@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
@@ -27,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class DashboardController implements Initializable {
@@ -47,22 +49,12 @@ public class DashboardController implements Initializable {
     private HBox toolBarRight;
     @FXML
     private VBox overflowContainer;
-    @FXML
-    private ToggleButton menuHome;
-    @FXML
-    private ToggleButton menuAdd;
-    @FXML
-    private ToggleButton menuList;
-    @FXML
-    private ToggleButton menuLogg;
 
-    private Parent home, add, list;
+    private Parent add, home;
     @FXML
     private JFXButton btnLogOut;
     @FXML
     private JFXButton btnExit;
-    @FXML
-    private JFXButton btnHome;
     @FXML
     private JFXButton btnAdd;
     @FXML
@@ -83,31 +75,20 @@ public class DashboardController implements Initializable {
     
     private static String studentID;
     
-    public String getStudentID() {
-    	return this.studentID;
-    }
+    public String getStudentID() {return this.studentID;}
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         createPages();
        
         try {
-   
             ResultSet result = DbHandler.getInstance().ExecSQL("SELECT studentID, fName, lName, img FROM topicS.Student WHERE studentID LIKE '%"+LoginController.getID()+"%'");
             result.first();
             studentID = result.getString("studentID");
             std_name.setText(result.getString("fName")+" "+result.getString("lName"));
 			id.setText(studentID);
-			//System.out.println(result.getBlob("img"));
 			avatar.setImage(DbHandler.convertBlob2Image(result.getBlob("img")));
-		
-//			ResultSet logos = DbHandler.getInstance().ExecSQL("SELECT logo FROM topicS.Department where deptID='BA'");
-//				    if (logos.next())
-//				   	image.setImage(DbHandler.convertBlob2Image(logos.getBlob(1)));
-			
-		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -128,23 +109,21 @@ public class DashboardController implements Initializable {
 
     private void createPages() {
         try {
-            home = FXMLLoader.load(getClass().getResource("Overview.fxml"));
-            add = FXMLLoader.load(getClass().getResource("Register.fxml"));
-//            list = FXMLLoader.load(getClass().getResource("SubjectRegistration.fxml"));
-            setNode(home);
+        	home = FXMLLoader.load(getClass().getResource("Overview.fxml"));
+            add = FXMLLoader.load(getClass().getResource("RegisterUI.fxml"));
+           setNode(add);
         } catch (IOException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-
+   
     @FXML
     private void openHome(ActionEvent event) {
         setNode(home);
     }
-
+    
     @FXML
-    private void openAddStudent(ActionEvent event) {
+    private void openAddCourse(ActionEvent event) {
 //        setNode(add);
     	 
 		try {
@@ -156,24 +135,27 @@ public class DashboardController implements Initializable {
 			 holderPane.getChildren().removeAll();
 	    	 holderPane.getChildren().setAll(fxml);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
     }
 
     @FXML
-    private void openListStudent(ActionEvent event) {
-        setNode(list);
+    private void onlogOff(ActionEvent event) {
+    	btnLogout.getScene().getWindow().hide();
+    	try {
+    		Stage dashboardStage = new Stage();
+    		dashboardStage.setTitle("");
+    		Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
+    		Scene scene = new Scene(root);
+    		dashboardStage.setScene(scene);
+    		dashboardStage.show();
+    	} catch (IOException ex) {
+    		Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+    	}
     }
 
     @FXML
-    private void logOff(ActionEvent event) {
-
-    }
-
-    @FXML
-    private void exit(ActionEvent event) {
+    private void onExit(ActionEvent event) {
         Platform.exit();
     }
 
